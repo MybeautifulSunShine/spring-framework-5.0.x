@@ -607,6 +607,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Validate that all properties marked as required are resolvable
 		// see ConfigurablePropertyResolver#setRequiredProperties
+		//得到系统环境
 		getEnvironment().validateRequiredProperties();
 
 		// Allow for the collection of early ApplicationEvents,
@@ -658,6 +659,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		//添加一个后置管理器
 		//ApplicationContextAwareProcessor
 		// 能够在bean中获得到各种*Aware（*Aware都有其作用）
+		//为什么让我们去处理添加一个后置处理器?因为我们可以参与bean工厂实例化的过程
+		//问题 接口干嘛的? 2 怎么使用的?
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);

@@ -10,6 +10,7 @@ buildscript {
 	}
 }
 
+
 // 3rd party plugin repositories can be configured in settings.gradle
 plugins {
 	id "com.gradle.build-scan" version "1.8"
@@ -18,7 +19,33 @@ plugins {
 	id "org.jetbrains.dokka" version "0.9.17"
 	id "org.asciidoctor.convert" version "1.5.6"
 }
+tasks.withType(JavaCompile) {
+    // Try to turn them all off automatically
+    options.compilerArgs << '-Xlint:none'
+    options.compilerArgs << '-nowarn' // same as '-Xlint:none'
 
+    // Turn them off manually
+    options.compilerArgs << '-Xlint:-auxiliaryclass'
+    options.compilerArgs << '-Xlint:-cast'
+    options.compilerArgs << '-Xlint:-classfile'
+    options.compilerArgs << '-Xlint:-deprecation'
+    options.compilerArgs << '-Xlint:-dep-ann'
+    options.compilerArgs << '-Xlint:-divzero'
+    options.compilerArgs << '-Xlint:-empty'
+    options.compilerArgs << '-Xlint:-fallthrough'
+    options.compilerArgs << '-Xlint:-finally'
+    options.compilerArgs << '-Xlint:-options'
+    options.compilerArgs << '-Xlint:-overloads'
+    options.compilerArgs << '-Xlint:-overrides'
+    options.compilerArgs << '-Xlint:-path'
+    options.compilerArgs << '-Xlint:-processing'
+    options.compilerArgs << '-Xlint:-rawtypes'
+    options.compilerArgs << '-Xlint:-serial'
+    options.compilerArgs << '-Xlint:-static'
+    options.compilerArgs << '-Xlint:-try'
+    options.compilerArgs << '-Xlint:-unchecked'
+    options.compilerArgs << '-Xlint:-varargs'
+}
 buildScan {
 	licenseAgreementUrl = "https://gradle.com/terms-of-service"
 	licenseAgree = "yes"
@@ -45,7 +72,7 @@ ext {
 	junitJupiterVersion  = "5.0.3"
 	junitPlatformVersion = "1.0.3"
 	junitVintageVersion  = "4.12.3"
-	kotlinVersion        = "1.2.51"
+	kotlinVersion        = "1.2.0"
 	log4jVersion         = "2.11.1"
 	nettyVersion         = "4.1.29.Final"
 	reactorVersion       = "Bismuth-BUILD-SNAPSHOT"
@@ -138,17 +165,17 @@ configure(allprojects) { project ->
 		}
 	}
 
-	test {
-		systemProperty("java.awt.headless", "true")
-		systemProperty("testGroups", project.properties.get("testGroups"))
-		scanForTestClasses = false
-		include(["**/*Tests.class", "**/*Test.class"])
-		// Since we set scanForTestClasses to false, we need to filter out inner
-		// classes with the "$" pattern; otherwise, using -Dtest.single=MyTests to
-		// run MyTests by itself will fail if MyTests contains any inner classes.
-		exclude(["**/Abstract*.class", '**/*$*'])
-		reports.junitXml.setDestination(file("$buildDir/test-results"))
-	}
+//	test {
+//		systemProperty("java.awt.headless", "true")
+//		systemProperty("testGroups", project.properties.get("testGroups"))
+//		scanForTestClasses = false
+//		include(["**/*Tests.class", "**/*Test.class"])
+//		// Since we set scanForTestClasses to false, we need to filter out inner
+//		// classes with the "$" pattern; otherwise, using -Dtest.single=MyTests to
+//		// run MyTests by itself will fail if MyTests contains any inner classes.
+//		exclude(["**/Abstract*.class", '**/*$*'])
+//		reports.junitXml.setDestination(file("$buildDir/test-results"))
+//	}
 
 	repositories {
 		maven { url "https://repo.spring.io/libs-release" }
