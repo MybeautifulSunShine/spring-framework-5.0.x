@@ -1,12 +1,15 @@
 package com.luban.test;
 
 import com.luban.app.Appconfig;
+import com.luban.dao.Dao;
 import com.luban.dao.IndexDao;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+//import com.luban.beanFactory.MyBeanFactoryProcess;
+
 /**
  * 描述:
- * 		源码追踪1
+ * 源码追踪1
  *
  * @author HGJ
  * @version 1.0
@@ -17,8 +20,14 @@ public class Test {
 		AnnotationConfigApplicationContext applicationContext =
 				new AnnotationConfigApplicationContext();
 		applicationContext.register(Appconfig.class);
+//		applicationContext.addBeanFactoryPostProcessor(new MyBeanFactoryProcess());
 		applicationContext.refresh();
-		IndexDao bean = applicationContext.getBean(IndexDao.class);
-		bean.query();
+//		IndexDao bean = applicationContext.getBean(IndexDao.class);
+//		IndexDao bean1 = applicationContext.getBean(IndexDao.class);
+//		System.out.println(bean.hashCode() + "--------" + bean1.hashCode());
+//		bean.query();
+//		applicationContext.getBean(IndexDao2.class).init();
+		Dao index1 = (Dao) applicationContext.getBean("indexDao");
+		index1.query();
 	}
 }

@@ -253,6 +253,7 @@ class ConfigurationClassParser {
 		}
 		while (sourceClass != null);
 		//一个map，用来存放扫描出来的bean（注意这里的bean不是对象，仅仅bean的信息，因为还没到实例化这一步）
+		//并不是放到Map中 而是放到变量当中去了
 		this.configurationClasses.put(configClass, configClass);
 	}
 
@@ -331,10 +332,11 @@ class ConfigurationClassParser {
 		 * 继而在递归调用本方法来处理这个类
 		 *
 		 * 判断一组类是不是imports（3种import）
-		 *
+		 * Import(xxx.class)里面xxx.class的文件的获得是在getImports(sourceClass) 这个方法里面去获取的
+		 * 也就说判断 这个类到底是不是import
 		 *
 		 */
-		processImports(configClass, sourceClass, getImports(sourceClass), true);
+   		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
 		// Process any @ImportResource annotations
 		AnnotationAttributes importResource =
@@ -653,7 +655,7 @@ class ConfigurationClassParser {
 							//回调
 							String[] importClassNames = selector.selectImports(currentSourceClass.getMetadata());
 							Collection<SourceClass> importSourceClasses = asSourceClasses(importClassNames);
-							//递归，这里第二次调用processImports
+							//递归，这里第二次调 用processImports
 							//如果是一个普通类，会斤else
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}

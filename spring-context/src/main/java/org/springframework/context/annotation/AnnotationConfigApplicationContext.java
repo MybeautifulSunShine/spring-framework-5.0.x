@@ -30,7 +30,7 @@ import org.springframework.util.Assert;
  * Spring中出来注解Bean定义的类有两个：
  * AnnotationConfigApplicationContext和
  * AnnotationConfigWebApplicationContex。
- * nnotationConfigWebApplicationContext
+ * AnnotationConfigWebApplicationContext
  * 是AnnotationConfigApplicationContext的web版本
  * 两者的用法以及对注解的处理方式几乎没有什么差别
  * 通过分析这个类我们知道注册一个bean到spring容器有两种办法

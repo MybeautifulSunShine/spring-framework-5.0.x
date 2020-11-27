@@ -11,11 +11,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class Test {
 	public static void main(String[] args) {
-		AnnotationConfigApplicationContext annotationConfigApplicationContext
-				= new AnnotationConfigApplicationContext(Appconfig.class);
-		//Appconfig appconfig = annotationConfigApplicationContext.getBean(Appconfig.class);
-
-		annotationConfigApplicationContext.getBean(IndexService.class);
+//		AnnotationConfigApplicationContext annotationConfigApplicationContext
+//				= new AnnotationConfigApplicationContext(Appconfig.class);
+//		//Appconfig appconfig = annotationConfigApplicationContext.getBean(Appconfig.class);
+//
+//		annotationConfigApplicationContext.getBean(IndexService.class);
 //		LubanAppcofig lubanAppcofig = new LubanAppcofig();
 //		lubanAppcofig.testProxy();
 //		lubanAppcofig.testProxy();
