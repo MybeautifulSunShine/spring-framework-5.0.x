@@ -141,6 +141,7 @@ class ConfigurationClassEnhancer {
 		//该BeanFactory的作用是在this调用时拦截该调用，并直接在beanFactory中获得目标bean
 		enhancer.setStrategy(new BeanFactoryAwareGeneratorStrategy(classLoader));
 		//过滤方法，不能每次都去new
+		//也就是在我们indexDao#query()方法之前要进行拦截
 		enhancer.setCallbackFilter(CALLBACK_FILTER);
 		enhancer.setCallbackTypes(CALLBACK_FILTER.getCallbackTypes());
 		return enhancer;
@@ -334,8 +335,10 @@ class ConfigurationClassEnhancer {
 		public Object intercept(Object enhancedConfigInstance, Method beanMethod, Object[] beanMethodArgs,
 					MethodProxy cglibMethodProxy) throws Throwable {
 
-			//enhancedConfigInstance 代理
+			//enhancedConfigInstance 代理对象
 			// 通过enhancedConfigInstance中cglib生成的成员变量$$beanFactory获得beanFactory。
+			//当我们调用 方法的时候
+			//		indexDao1();
 			ConfigurableBeanFactory beanFactory = getBeanFactory(enhancedConfigInstance);
 
 			String beanName = BeanAnnotationHelper.determineBeanNameFor(beanMethod);
@@ -356,6 +359,7 @@ class ConfigurationClassEnhancer {
 			// proxy that intercepts calls to getObject() and returns any cached bean instance.
 			// This ensures that the semantics of calling a FactoryBean from within @Bean methods
 			// is the same as that of referring to a FactoryBean within XML. See SPR-6602.
+			//判断 app里面返回的是否是factoryBean 判断是否是FactoryBean
 			if (factoryContainsBean(beanFactory, BeanFactory.FACTORY_BEAN_PREFIX + beanName) &&
 					factoryContainsBean(beanFactory, beanName)) {
 				Object factoryBean = beanFactory.getBean(BeanFactory.FACTORY_BEAN_PREFIX + beanName);
