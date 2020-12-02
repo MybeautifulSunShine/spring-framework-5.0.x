@@ -1,30 +1,28 @@
 package com.luban.app;
 
-import com.luban.dao.IndexDao;
-import com.luban.dao.IndexDao2;
-import org.springframework.context.annotation.Bean;
+import com.luban.anno.EanbleHgj;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @ComponentScan({"com.luban"})
 @Configuration
 //@Import(MyImport.class)
-//@EanbleHgj
+@EanbleHgj
 //@Import(MyImport.class)
 public class Appconfig {
 
-	@Bean
-	public IndexDao2 indexDao1() {
+//	@Bean
+//	public IndexDao2 indexDao1() {
+//
+//		return new IndexDao2();
+//	}
 
-		return new IndexDao2();
-	}
 
-
-	@Bean
-	public IndexDao indexDao() {
-		//在这里进行拦截
-		indexDao1();
+//	@Bean
+//	public IndexDao indexDao() {
+//		//在这里进行拦截
 //		indexDao1();
-		return new IndexDao();
-	}
+////		indexDao1();
+//		return new IndexDao();
+//	}
 }

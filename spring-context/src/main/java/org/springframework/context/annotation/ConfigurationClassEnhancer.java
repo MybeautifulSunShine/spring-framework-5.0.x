@@ -75,7 +75,7 @@ class ConfigurationClassEnhancer {
 
 	// The callbacks to use. Note that these callbacks must be stateless.
 	private static final Callback[] CALLBACKS = new Callback[] {
-			//增强方法，主要空bean的作用域
+			//增强方法，主要 空置bean的作用域
 			//不每一次都去调用new
 			new BeanMethodInterceptor(),
 			//设置一个beanFactory

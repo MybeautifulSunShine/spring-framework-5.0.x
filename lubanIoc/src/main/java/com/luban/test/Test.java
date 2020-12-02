@@ -1,10 +1,8 @@
 package com.luban.test;
 
 import com.luban.app.Appconfig;
+import com.luban.dao.Dao;
 import com.luban.dao.IndexDao;
-import com.luban.dao.MyTestMethodCallBack;
-import org.springframework.cglib.core.SpringNamingPolicy;
-import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 //import com.luban.beanFactory.MyBeanFactoryProcess;
@@ -24,7 +22,8 @@ public class Test {
 		applicationContext.register(Appconfig.class);
 //		applicationContext.addBeanFactoryPostProcessor(new MyBeanFactoryProcess());
 		applicationContext.refresh();
-//		IndexDao bean = applicationContext.getBean(IndexDao.class);
+		Dao bean =(Dao) applicationContext.getBean("indexDao");
+		bean.query();
 //		IndexDao bean1 = applicationContext.getBean(IndexDao.class);
 //		System.out.println(bean.hashCode() + "--------" + bean1.hashCode());
 //		bean.query();
@@ -33,12 +32,12 @@ public class Test {
 //		index1.query();
 //		Appconfig appConfig = (Appconfig) applicationContext.getBean("appconfig");
 //		System.out.println(appConfig);
-		Enhancer enhancer = new Enhancer();
-		//增强父类，地球人都知道cglib是基于继承来的
-		enhancer.setSuperclass(IndexDao.class);
-		enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
-		enhancer.setCallback(new MyTestMethodCallBack());
-		IndexDao indexDao = (IndexDao) enhancer.create();
-		indexDao.query();
+//		Enhancer enhancer = new Enhancer();
+//		//增强父类，地球人都知道cglib是基于继承来的
+//		enhancer.setSuperclass(IndexDao.class);
+//		enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
+//		enhancer.setCallback(new MyTestMethodCallBack());
+//		IndexDao indexDao = (IndexDao) enhancer.create();
+//		indexDao.query();
 	}
 }
