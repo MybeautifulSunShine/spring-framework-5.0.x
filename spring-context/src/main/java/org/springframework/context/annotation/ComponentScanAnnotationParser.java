@@ -108,6 +108,7 @@ class ComponentScanAnnotationParser {
 		}
 
 		//默认false
+		//  先给一个false当以后做处理的时候才回去里面去读取具体文件
 		boolean lazyInit = componentScan.getBoolean("lazyInit");
 		if (lazyInit) {
 			scanner.getBeanDefinitionDefaults().setLazyInit(true);

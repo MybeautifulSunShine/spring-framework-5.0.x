@@ -161,6 +161,7 @@ class ConfigurationClassParser {
 
 
 	public void parse(Set<BeanDefinitionHolder> configCandidates) {
+		//联想到它会对 不同的Import 类型  DeferredImportSelectorHolder
 		this.deferredImportSelectors = new LinkedList<>();
 		//根据BeanDefinition 的类型 做不同的处理,一般都会调用ConfigurationClassParser#parse 进行解析
 		for (BeanDefinitionHolder holder : configCandidates) {
