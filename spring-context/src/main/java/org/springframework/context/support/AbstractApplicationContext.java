@@ -540,7 +540,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
-				//注册beanPostProcessor
+				//注册beanPostProcessor包括AOP之类的东西 拦截器 的后置处理器之类的内容
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
@@ -722,7 +722,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		//这个地方需要注意getBeanFactoryPostProcessors()是获取手动给spring的BeanFactoryPostProcessor 也就是MyBEan...
 		//自定义并不仅仅是程序员自己写的
 		//自己写的可以加companent也可以不加
-		//如果加了getBeanFactoryPostProcessors()这个地方得不得，是spring自己扫描的
+		//如果加了getBeanFactoryPostProcessors()这个地方得不到，是spring自己扫描的
 		//为什么得不到getBeanFactoryPostProcessors（）这个方法是直接获取一个list，
 		//这个list是在AnnotationConfigApplicationContext被定义
 		//所谓的自定义的就是你手动调用AnnotationConfigApplicationContext.addBeanFactoryPostProcesor();
@@ -732,6 +732,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
 		// (e.g. through an @Bean method registered by ConfigurationClassPostProcessor)
+		//处理后置处理器
 		if (beanFactory.getTempClassLoader() == null && beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));

@@ -1,21 +1,18 @@
 package com.luban.test;
 
 import com.luban.app.Appconfig;
-import com.luban.service.IndexService;
-import com.luban.service.Luban;
-import com.luban.service.OrderService;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.cglib.core.SpringNamingPolicy;
-import org.springframework.cglib.proxy.Enhancer;
+import com.luban.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Test {
 	public static void main(String[] args) {
-//		AnnotationConfigApplicationContext annotationConfigApplicationContext
-//				= new AnnotationConfigApplicationContext(Appconfig.class);
-//		//Appconfig appconfig = annotationConfigApplicationContext.getBean(Appconfig.class);
-//
-//		annotationConfigApplicationContext.getBean(IndexService.class);
+		AnnotationConfigApplicationContext annotationConfigApplicationContext
+				= new AnnotationConfigApplicationContext(Appconfig.class);
+		Appconfig appconfig = annotationConfigApplicationContext.getBean(Appconfig.class);
+
+		System.out.println(annotationConfigApplicationContext.getBean(UserService.class).getClass().getName());
+
+//		annotationConfigApplicationContext.getBean(UserService.class);
 //		LubanAppcofig lubanAppcofig = new LubanAppcofig();
 //		lubanAppcofig.testProxy();
 //		lubanAppcofig.testProxy();

@@ -3,6 +3,10 @@ package com.luban.test;
 import com.luban.app.Appconfig;
 import com.luban.dao.Dao;
 import com.luban.dao.IndexDao;
+import com.luban.dao.MyTestMethodCallBack;
+import org.springframework.cglib.core.DebuggingClassWriter;
+import org.springframework.cglib.core.SpringNamingPolicy;
+import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 //import com.luban.beanFactory.MyBeanFactoryProcess;
@@ -22,7 +26,7 @@ public class Test {
 		applicationContext.register(Appconfig.class);
 //		applicationContext.addBeanFactoryPostProcessor(new MyBeanFactoryProcess());
 		applicationContext.refresh();
-		Dao bean =(Dao) applicationContext.getBean("indexDao");
+		Dao bean =(Dao) applicationContext.getBean("indexDao2");
 		bean.query();
 //		IndexDao bean1 = applicationContext.getBean(IndexDao.class);
 //		System.out.println(bean.hashCode() + "--------" + bean1.hashCode());
@@ -38,6 +42,8 @@ public class Test {
 //		enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
 //		enhancer.setCallback(new MyTestMethodCallBack());
 //		IndexDao indexDao = (IndexDao) enhancer.create();
+//
 //		indexDao.query();
+//		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "C:\\class");
 	}
 }

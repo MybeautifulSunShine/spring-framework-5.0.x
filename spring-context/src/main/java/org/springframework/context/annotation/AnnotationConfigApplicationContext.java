@@ -96,7 +96,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		/**
 		 * 父类的构造方法
 		 * 创建一个读取注解的Bean定义读取器
-		 * 什么是bean定义？BeanDefinition
+		 * 什么是bean定义？BeanDefinition 读取添加了@Config的类
 		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 

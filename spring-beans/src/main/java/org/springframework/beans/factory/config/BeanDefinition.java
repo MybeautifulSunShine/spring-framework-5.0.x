@@ -23,7 +23,7 @@ import org.springframework.lang.Nullable;
 
 /**
  *
- * spring当中用来描述bean的一个接口
+ * spring当中用来描述bean的一个接口 当前类中都能找到xml中与之对应的参数
  * A BeanDefinition describes a bean instance, which has property values,
  * constructor argument values, and further information supplied by
  * concrete implementations.
@@ -88,7 +88,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	// Modifiable attributes
 
-	/**
+	/**设置父Bd
 	 * Set the name of the parent definition of this bean definition, if any.
 	 */
 	void setParentName(@Nullable String parentName);
@@ -99,7 +99,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	@Nullable
 	String getParentName();
 
-	/**
+	/** 设置bean的类型-- >bean名字 class
 	 * Specify the bean class name of this bean definition.
 	 * <p>The class name can be modified during bean factory post-processing,
 	 * typically replacing the original class name with a parsed variant of it.
@@ -152,6 +152,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	boolean isLazyInit();
 
 	/**
+	 * 在实体化别的类之前要把指定的类new出来
 	 * Set the names of the beans that this bean depends on being initialized.
 	 * The bean factory will guarantee that these beans get initialized first.
 	 */
@@ -164,6 +165,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	String[] getDependsOn();
 
 	/**
+	 * 设置是否作为自动装配的候选对象
 	 * Set whether this bean is a candidate for getting autowired into some other bean.
 	 * <p>Note that this flag is designed to only affect type-based autowiring.
 	 * It does not affect explicit references by name, which will get resolved even
@@ -178,6 +180,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	boolean isAutowireCandidate();
 
 	/**
+	 * 是否是主要的内容 如果注入多个实现类的话 xml配置中需要指定
 	 * Set whether this bean is a primary autowire candidate.
 	 * <p>If this value is {@code true} for exactly one bean among multiple
 	 * matching candidates, it will serve as a tie-breaker.
@@ -189,7 +192,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 */
 	boolean isPrimary();
 
-	/**
+	/** xml配置中的factory-method  可以写这个Service返回的对象
 	 * Specify the factory bean to use, if any.
 	 * This the name of the bean to call the specified factory method on.
 	 * @see #setFactoryMethodName
@@ -219,13 +222,15 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	String getFactoryMethodName();
 
 	/**
+	 * 我们要实例化的时候 <constructor- arg  index="0"/> 实例化的时候我们要的构造方法的参数
+	 * 构造方法的参数值
 	 * Return the constructor argument values for this bean.
 	 * <p>The returned instance can be modified during bean factory post-processing.
 	 * @return the ConstructorArgumentValues object (never {@code null})
 	 */
 	ConstructorArgumentValues getConstructorArgumentValues();
 
-	/**
+	/**构造方法有没有传参数
 	 * Return if there are constructor argument values defined for this bean.
 	 * @since 5.0.2
 	 */
@@ -233,7 +238,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 		return !getConstructorArgumentValues().isEmpty();
 	}
 
-	/**
+	/**set 的值
 	 * Return the property values to be applied to a new instance of the bean.
 	 * <p>The returned instance can be modified during bean factory post-processing.
 	 * @return the MutablePropertyValues object (never {@code null})
@@ -267,6 +272,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	boolean isPrototype();
 
 	/**
+	 * 判断是不是抽象类 为什么有抽象类 ?
 	 * Return whether this bean is "abstract", that is, not meant to be instantiated.
 	 */
 	boolean isAbstract();

@@ -2,12 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	<!--<bean id="index" class="com.luban.service.IndexService" primary="">-->
+	<!--<bean id="index" class="com.hgj.service.IndexService" primary="">-->
 
 		<!--<constructor-arg index="0" value="order"></constructor-arg>-->
 	<!--</bean>-->
 
-	<!--<bean id="order" class="com.luban.service.OrderService" fm="indexService">-->
+	<!--<bean id="order" class="com.hgj.service.OrderService" fm="indexService">-->
 
 	<!--</bean>-->
 

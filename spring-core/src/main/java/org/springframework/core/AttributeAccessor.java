@@ -24,6 +24,7 @@ import org.springframework.lang.Nullable;
  *
  * @author Rob Harrop
  * @since 2.0
+ * 提供对BeanDefinition的元数据操作的api 由abs
  */
 public interface AttributeAccessor {
 

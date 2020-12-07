@@ -49,6 +49,7 @@ import org.springframework.lang.Nullable;
 final class PostProcessorRegistrationDelegate {
 
 	public static void invokeBeanFactoryPostProcessors(
+			// beanFactoryPostProcessors  是我们自定义的 外面传进来的
 			ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
 
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
@@ -69,7 +70,7 @@ final class PostProcessorRegistrationDelegate {
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 					registryProcessors.add(registryProcessor);
 				}
-				else {//BeanDefinitionRegistryPostProcessor  BeanfactoryPostProcessor
+				else {//BeanDefinitionRegistryPostProcessor  BeanfactoryPostProcessor 只有 这两种情况
 					regularPostProcessors.add(postProcessor);
 				}
 			}
@@ -153,6 +154,9 @@ final class PostProcessorRegistrationDelegate {
 			//ConfuguratuonClassPpostProcssor
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			//自定义BeanFactoryPostProcessor
+			/**
+			 * @See#org/springframework/context/support/PostProcessorRegistrationDelegate.java:53
+			 */
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}
 
@@ -164,6 +168,8 @@ final class PostProcessorRegistrationDelegate {
 		// Do not initialize FactoryBeans here: We need to leave all regular beans
 		// uninitialized to let the bean factory post-processors apply to them!
 		//ConfigurationClassPostProcessor
+		//除非 你在这里处理过程中又添加了一个postProcess才会到
+		//@See#org/springframework/context/support/PostProcessorRegistrationDelegate.java:180 这行的地方去
 		String[] postProcessorNames =
 				beanFactory.getBeanNamesForType(BeanFactoryPostProcessor.class, true, false);
 
@@ -208,6 +214,7 @@ final class PostProcessorRegistrationDelegate {
 
 		// Clear cached merged bean definitions since the post-processors might have
 		// modified the original metadata, e.g. replacing placeholders in values...
+		//清理缓存
 		beanFactory.clearMetadataCache();
 	}
 

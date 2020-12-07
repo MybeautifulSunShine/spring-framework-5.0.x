@@ -231,7 +231,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					"postProcessBeanFactory already called on this post-processor against " + registry);
 		}
 		this.registriesPostProcessed.add(registryId);
-
+		//这里应该有Appconfig 之类的
 		processConfigBeanDefinitions(registry);
 	}
 

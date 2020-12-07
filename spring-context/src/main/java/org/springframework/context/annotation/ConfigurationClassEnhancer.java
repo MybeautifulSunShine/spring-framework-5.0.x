@@ -374,7 +374,7 @@ class ConfigurationClassEnhancer {
 
 			//一个非常牛逼的判断
 			//判断到底是new 还是get
-			//判断执行的方法和调用方法是不是同一个方法
+			//判断执行的	方法和调用方法是不是同一个方法
 			if (isCurrentlyInvokedFactoryMethod(beanMethod)) {
 				// The factory is calling the bean method in order to instantiate and register the bean
 				// (i.e. via a getBean() call) -> invoke the super implementation of the method to actually
