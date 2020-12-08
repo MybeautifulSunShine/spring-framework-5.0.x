@@ -2,6 +2,7 @@ package com.hgj.test;
 
 import com.hgj.app.Appconfig;
 import com.hgj.beanDetiontion.CustomScanner;
+import com.hgj.beanDetiontion.HGBeanFactoryProcess;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Test {
@@ -10,11 +11,13 @@ public class Test {
 		AnnotationConfigApplicationContext applicationContext =
 				new AnnotationConfigApplicationContext();
 		applicationContext.register(Appconfig.class);
+		applicationContext.addBeanFactoryPostProcessor(new HGBeanFactoryProcess());
 		applicationContext.refresh();
-		CustomScanner scanner = new CustomScanner(applicationContext);
-		scanner.addIncludeFilter(null);
-		int scan = scanner.scan("com.hgj");
-		System.out.println(scan);
+
+//		CustomScanner scanner = new CustomScanner(applicationContext);
+//		scanner.addIncludeFilter(null);
+//		int scan = scanner.scan("com.hgj");
+//		System.out.println(scan);
 
 //		ac.getBean("");
 //		Proxy.newProxyInstance();

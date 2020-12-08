@@ -52,14 +52,18 @@ final class PostProcessorRegistrationDelegate {
 			// beanFactoryPostProcessors  是我们自定义的 外面传进来的
 			ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
 
-		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
+		// Invoke BeanDefinitionRegistryPostProcessors first, if any. 
+		//存放的是所有BeanDefinitionRegistryPostProcessors的名字
 		Set<String> processedBeans = new HashSet<>();
 
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 			//两个List 因为  registryProcessors 有扩展
-			//因为两个类作用不一样
+			//因为两个类作用不一样 
+			//这里存放的是BeanFactoryPostProcessor
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
+			//这里存放的是BeanDefinitionRegistryPostProcessor
+			//同时也存放所有内置的BeanDefintion
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
 			//自定义的beanFactoryPostProcessors
@@ -70,7 +74,8 @@ final class PostProcessorRegistrationDelegate {
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 					registryProcessors.add(registryProcessor);
 				}
-				else {//BeanDefinitionRegistryPostProcessor  BeanfactoryPostProcessor 只有 这两种情况
+				else {
+					//BeanDefinitionRegistryPostProcessor  BeanfactoryPostProcessor 只有 这两种情况
 					regularPostProcessors.add(postProcessor);
 				}
 			}
@@ -100,7 +105,8 @@ final class PostProcessorRegistrationDelegate {
 			//下面我们对这个牛逼哄哄的类（他能插手spring工厂的实例化过程还不牛逼吗？）重点解释
 			for (String ppName : postProcessorNames) {
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
-					//当前执行的接口
+					//当前执行的接口 直接从容器当中去 na
+					//如果拿不到的话就去实例化这bd
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 					processedBeans.add(ppName);
 				}
