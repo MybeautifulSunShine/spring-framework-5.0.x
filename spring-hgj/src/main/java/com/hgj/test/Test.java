@@ -1,27 +1,24 @@
 package com.hgj.test;
 
 import com.hgj.app.Appconfig;
-import com.hgj.batis.MyProxy;
-import com.hgj.services.ZLService;
-import com.hgj.target.ZLServiceImpl;
-import org.springframework.context.ApplicationContext;
+import com.hgj.beanDetiontion.CustomScanner;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.io.File;
 
 public class Test {
 
 	public static void main(String[] args) {
-//		ApplicationContext ac = new AnnotationConfigApplicationContext(Appconfig.class);
+		AnnotationConfigApplicationContext applicationContext =
+				new AnnotationConfigApplicationContext();
+		applicationContext.register(Appconfig.class);
+		applicationContext.refresh();
+		CustomScanner scanner = new CustomScanner(applicationContext);
+		scanner.addIncludeFilter(null);
+		int scan = scanner.scan("com.hgj");
+		System.out.println(scan);
+
 //		ac.getBean("");
 //		Proxy.newProxyInstance();
 
-		try {
-			ZLService proxy = (ZLService) MyProxy.getInstance(new ZLServiceImpl());
-			proxy.update("XXXX");
-		} catch (Exception e) {
-//			e.printStackTrace();
-		}
 //		UserDao target = new UserDaoImpl();
 //
 //		UserDao pxory = new $ProxyLuban(target);
@@ -33,6 +30,6 @@ public class Test {
 //		mapper.qyery();
 
 //	}
-}
+	}
 
 }

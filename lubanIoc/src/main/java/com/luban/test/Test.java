@@ -1,12 +1,6 @@
 package com.luban.test;
 
 import com.luban.app.Appconfig;
-import com.luban.dao.Dao;
-import com.luban.dao.IndexDao;
-import com.luban.dao.MyTestMethodCallBack;
-import org.springframework.cglib.core.DebuggingClassWriter;
-import org.springframework.cglib.core.SpringNamingPolicy;
-import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 //import com.luban.beanFactory.MyBeanFactoryProcess;
@@ -26,8 +20,12 @@ public class Test {
 		applicationContext.register(Appconfig.class);
 //		applicationContext.addBeanFactoryPostProcessor(new MyBeanFactoryProcess());
 		applicationContext.refresh();
-		Dao bean =(Dao) applicationContext.getBean("indexDao2");
-		bean.query();
+//		applicationContext.scan("");
+//		Dao bean = (Dao) applicationContext.getBean("indexDao2");
+//		bean.query();
+//		CustomScanner scanner = new CustomScanner(applicationContext);
+//		scanner.addIncludeFilter(null);
+//		scanner.scan("com.luban");
 //		IndexDao bean1 = applicationContext.getBean(IndexDao.class);
 //		System.out.println(bean.hashCode() + "--------" + bean1.hashCode());
 //		bean.query();

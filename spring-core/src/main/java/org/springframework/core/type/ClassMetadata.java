@@ -62,7 +62,7 @@ public interface ClassMetadata {
 	 */
 	boolean isFinal();
 
-	/**
+	/** 是不是独立的类顶级的类
 	 * Determine whether the underlying class is independent, i.e. whether
 	 * it is a top-level class or a nested class (static inner class) that
 	 * can be constructed independently from an enclosing class.

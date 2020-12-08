@@ -67,7 +67,7 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 */
 	boolean hasMetaAnnotation(String metaAnnotationName);
 
-	/**
+	/** 查看是否是抽象类
 	 * Determine whether the underlying class has any methods that are
 	 * annotated (or meta-annotated) with the given annotation type.
 	 * @param annotationName the fully qualified class name of the annotation
