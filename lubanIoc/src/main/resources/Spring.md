@@ -234,13 +234,27 @@ scan ---> 解析 parse-->验证validate(info) -->initBean 实例化初始化(生
 
 4Life----(生命周期) 遍历map  得到beanDefinition 实例化o1 
 
-单例池  BeanDefinition 是什么? 是对我们的普通的bean 用BeanDefinition 来定义Spring当中的Bean供给我们在程序或者Spring当中去使用  单例池和 bd池 都是存在map当中
-
-
-
-**合并merge?**
+单例池  BeanDefinition 是什么? 是对我们的普通的bean 用BeanDefinition 来定义Spring当中的Bean供给我们在程序或者Spring当中去使用  单例池和 bd池 都是存在map当中  **合并merge?**
 
 每个 BeanDefinition的子类 的作用    
+
+在实例化的时候为什么只是实例化了一个AnnotatedBeanDefinitionReader?因为需要根据它来实例化配置类也就是Appconfig.class 读取配置类BeanDefinitionRegistryPostProcessor--还没有完成扫描之前
+没明白spring是怎么保证他自己的后置处理器先执行? spring提供的内置的beanFactoryPostProcessor ---- >ConfigurationClassPostProcessor
+BeanFactoryPostProcessor bean工厂的后置外理器 干预bean工厂的工作流程 bean1厂 (DefaultListableBeanFactory)
+
+**扫描包,怎么完成的扫描?**
+
+**Spring提供jar包去生成类的索引**
+
+**模拟mybitis的扫描**
+
+
+
+
+
+Bean工厂的后置处理器--bean的后置处理器
+
+初始化的处理器  实例化的处理器
 
 
 
