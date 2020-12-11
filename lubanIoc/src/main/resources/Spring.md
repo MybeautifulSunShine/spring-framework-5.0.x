@@ -258,23 +258,129 @@ Bean工厂的后置处理器--bean的后置处理器
 
 
 
+46 理解了注册的时候得部分源码 类里面的执行逻辑以及为什么要这样执行 
+
+**策略模式的代码逻辑块的理解也就是两个Bean工厂的执行时机** 
 
 
 
+类图 :https://www.processon.com/view/link/5c15e10ae4b0ed122da86303
 
+```java
+org.springframework.context.support.PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors(org.springframework.beans.factory.config.ConfigurableListableBeanFactory, java.util.List<org.springframework.beans.factory.config.BeanFactoryPostProcessor>)
+```
 
+@MapperScan的处理时机  新版与旧版的区别  
 
+旧版 Spring扫描完成后立即执行 
 
+因为新版的是实现了bdrpp这个接口的,它的执行时间被内定了 
 
+org.mybatis.spring.annotation.MapperScannerRegistrar#registerBeanDefinitions(org.springframework.core.type.AnnotationMetadata, org.springframework.beans.factory.support.BeanDefinitionRegistry) 这个方法
 
+Spring的三个扩展点: 
 
+BeanDefinitionRegistry ,BeanFactoryPostProcessor ,ImportBeanDefinitionRegistrar 
 
+执行时机 某个扩展点在哪里实现的,分别是怎么实现的 
 
+1. 1 bean工厂的后置处理器 --->  BeanDefinitionRegistryPostProcessor  
+   1首先执行程序员通过api提供----> ac.addBeanFactoryPostProcessor();
+   2然后执行spring内置的 程序员提供有特点---> PriorityOrdered
+   3程序员提供 设有任何特点X impl BeanDefinitionRegistryPostProcessor --- >postProcessBeanDefinitionRegist()
 
+2. BeanFactoryPostProcessor
+  1执行的是实现了 子类的 --->BeanDefinitionRegistryPostProcessor的BeanFactoryPostProcessor ----------->postProcessBeanfactory 
+
+  ```java
+  org.springframework.context.annotation.ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry
+  ```
+
+  2执行直接实现了BeanFactoryPostProcessorostProcessBeanFactory-分特点
+
+  
+
+bean的后置处理器 14个
+
+![image-20201209151847197](https://i.loli.net/2020/12/09/FNrC7Q2UiWwXAep.png)
+
+![image-20201209151939112](https://i.loli.net/2020/12/09/jnFxBd5qVUmR1sg.png)
+
+所谓的代理就是产生一个新的类
+
+每次创建bean的时候就把正在创建的bean存到一个集合当中 
+
+@Bean的方式与  会把创建的Bean存在一个map中 
+
+org.springframework.beans.factory.support.SimpleInstantiationStrategy#currentlyInvokedFactoryMethod    
+
+会调用父类,而父类里面是创建e方法所有 ->当前正在创建的bean的方法是f()方法但是正在执行确实e()方法 
+
+**代理模式 重点记住的是 代理方法的父类就是我们当前写的类**
+
+也就是在内存中,我们的代理类一般是下面这样的 
+
+```java
+public $CglibA extend A{
+    xxxx
+}
+```
+
+所以当调用方法的时候一般指的是,是调用代理方法的父类
+
+Spring在创建@Bean的时候时候回去判断当前类是不是全注解类,如果是的话就去使用cglib代理
+
+保证单例的思路就是代理,如果你这个当前方法内调用其他的方法 会进行比对,也就是当前创建的方法和当前执行的方法是不是同一个,如果一样就会调用父类去创建bean 不一样的话就会调用自己的逻辑去创建bean
+
+同时保存一个方法到线程里面 同时保存一个当前创建bean的方法是哪个 
+
+一个存在set里面一个存在当前线程中
+
+普通的@Conpont 有区别
+
+所有的bd都扫描出来放到map当中  
+
+```java
+org.springframework.context.support.PostProcessorRegistrationDelegate#invokeBeanDefinitionRegistryPostProcessors  
+    --->org.springframework.context.support.PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors(java.util.Collection<? extends org.springframework.beans.factory.config.BeanFactoryPostProcessor>, org.springframework.beans.factory.config.ConfigurableListableBeanFactory) 
+    --- > 判断要不要参数代理org.springframework.context.annotation.ConfigurationClassPostProcessor#enhanceConfigurationClasses 
+```
+
+也就是我们之前bdmap中把原来的appconfig的类,替换成我们的代理对象 proxy对象
+
+ **Spring当中的循环引用**
+
+​		1正在创建 
+
+**Spring怎么体现当中默认支持循环依赖 -->关闭循环依赖**
+
+**Spring在那一步完成的属性注入?** --->**SpringBean 的生命周期**
+
+属性注入的时候 -spring bean的生命周期
+
+1. 推断物造方法
+
+1. 实例化一个对象
+2. 属性注入
+3. 生命周期回调初始化方法
+4.  aop代理
+   bean 
 
 **重点 :接口干嘛的? 2 怎么使用的? 以及Spring重要的几个类的作用** 	    
 
-代码入口   
+org.springframework.beans.factory.ObjectFactory 半成品的bd 提前暴露工厂
+
+
+
+```java
+org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean --属性注入 注解解析
+	CommonAnnotationBeanFactoryProcess  --->处理@Resources
+	AutowiredAnnotationTypes -->处理    @Autowired
+```
+
+
+
+
 
 基本了解    查看Spring代码的风格 
 
