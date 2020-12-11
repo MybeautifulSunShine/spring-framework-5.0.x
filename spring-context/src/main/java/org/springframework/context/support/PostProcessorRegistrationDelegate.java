@@ -16,29 +16,19 @@
 
 package org.springframework.context.support;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
-import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.factory.support.*;
 import org.springframework.core.OrderComparator;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.lang.Nullable;
+
+import java.util.*;
 
 /**
  * Delegate for AbstractApplicationContext's post-processor handling.
@@ -68,13 +58,18 @@ final class PostProcessorRegistrationDelegate {
 
 			//自定义的beanFactoryPostProcessors
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
+				//判断是否是子类
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
+					/**
+					 *  如果是程序员指定的直接执行 什么是指定的也就是通过我们手动添加的
+					 *  applicationContext.addBeanFactoryPostProcessor(new HGBeanFactoryProcess());
+					 */
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 					registryProcessors.add(registryProcessor);
-				}
-				else {
+				} else {
+					//父类的话放到这里
 					//BeanDefinitionRegistryPostProcessor  BeanfactoryPostProcessor 只有 这两种情况
 					regularPostProcessors.add(postProcessor);
 				}
@@ -85,7 +80,7 @@ final class PostProcessorRegistrationDelegate {
 			// Separate between BeanDefinitionRegistryPostProcessors that implement
 			// PriorityOrdered, Ordered, and the rest.
 			//这个currentRegistryProcessors 放的是spring内部自己实现了BeanDefinitionRegistryPostProcessor接口的对象
-
+			//当前执行的需要执行的currentRegistryProcessors spring的策略模式不同的策略不同的执行时机
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
@@ -105,7 +100,7 @@ final class PostProcessorRegistrationDelegate {
 			//下面我们对这个牛逼哄哄的类（他能插手spring工厂的实例化过程还不牛逼吗？）重点解释
 			for (String ppName : postProcessorNames) {
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
-					//当前执行的接口 直接从容器当中去 na
+					//当前执行的接口 直接从容器当中去拿
 					//如果拿不到的话就去实例化这bd
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 					processedBeans.add(ppName);
@@ -159,19 +154,23 @@ final class PostProcessorRegistrationDelegate {
 			//前面执行的BeanFactoryPostProcessor的子类BeanDefinitionRegistryPostProcessor的回调
 			//这是执行的是BeanFactoryPostProcessor    postProcessBeanFactory
 			//ConfuguratuonClassPpostProcssor
+			//下面两个方法一个执行的是父类的以及其子类的
+			/**spring已经执行完所有的BeanDefinitionRegistryPostProcessor
+			 * 1, api --> new 2、内置--->Springput  3、程序员提供-程序员自aabeanDefinitionM
+			 */
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
-			//自定义BeanFactoryPostProcessor
+			//自定义以及内置的BeanFactoryPostProcessor
 			/**
 			 * @See#org/springframework/context/support/PostProcessorRegistrationDelegate.java:53
 			 */
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
-		}
-
-		else {
+		} else {
 			// Invoke factory processors registered with the context instance.
 			invokeBeanFactoryPostProcessors(beanFactoryPostProcessors, beanFactory);
 		}
-
+		//找出程序员提供的,通过注解提供的
+		//因为上面通过执行子类已经扫描出来了程序员提供的  	不是通过api提供
+		//执行完子类 才能去执行父类 ,父类不具备功能扫描 子类才具备
 		// Do not initialize FactoryBeans here: We need to leave all regular beans
 		// uninitialized to let the bean factory post-processors apply to them!
 		//ConfigurationClassPostProcessor
@@ -188,14 +187,11 @@ final class PostProcessorRegistrationDelegate {
 		for (String ppName : postProcessorNames) {
 			if (processedBeans.contains(ppName)) {
 				// skip - already processed in first phase above
-			}
-			else if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+			} else if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 				priorityOrderedPostProcessors.add(beanFactory.getBean(ppName, BeanFactoryPostProcessor.class));
-			}
-			else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
+			} else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
 				orderedPostProcessorNames.add(ppName);
-			}
-			else {
+			} else {
 				nonOrderedPostProcessorNames.add(ppName);
 			}
 		}
@@ -250,11 +246,9 @@ final class PostProcessorRegistrationDelegate {
 				if (pp instanceof MergedBeanDefinitionPostProcessor) {
 					internalPostProcessors.add(pp);
 				}
-			}
-			else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
+			} else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
 				orderedPostProcessorNames.add(ppName);
-			}
-			else {
+			} else {
 				nonOrderedPostProcessorNames.add(ppName);
 			}
 		}
@@ -350,7 +344,7 @@ final class PostProcessorRegistrationDelegate {
 	 * BeanPostProcessor instantiation, i.e. when a bean is not eligible for
 	 * getting processed by all BeanPostProcessors.
 	 * 当Spring的配置中的后处理器还没有被注册就已经开始了bean的初始化
-	 *	便会打印出BeanPostProcessorChecker中设定的信息
+	 * 便会打印出BeanPostProcessorChecker中设定的信息
 	 */
 	private static final class BeanPostProcessorChecker implements BeanPostProcessor {
 

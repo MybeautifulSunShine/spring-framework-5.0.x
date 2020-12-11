@@ -260,6 +260,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		/**
 		 * Full
 		 * Lite
+		 * candidateNames 是所有的bd的名字包括我们的AppConfig类
 		 */
 		for (String beanName : candidateNames) {
 			//根据名字得到bd--为什么需要得到bd呢?这段代码的意义在哪里?
@@ -426,7 +427,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			// nothing to enhance -> return immediately
 			return;
 		}
-
+		//完成代理
 		ConfigurationClassEnhancer enhancer = new ConfigurationClassEnhancer();
 		for (Map.Entry<String, AbstractBeanDefinition> entry : configBeanDefs.entrySet()) {
 			AbstractBeanDefinition beanDef = entry.getValue();

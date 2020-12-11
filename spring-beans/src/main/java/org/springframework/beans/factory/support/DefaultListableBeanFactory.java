@@ -754,6 +754,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		// Trigger initialization of all non-lazy singleton beans...
 		// 触发所有非延迟加载单例beans的初始化，主要步骤为调用getBean
+		//遍历所有的beanDefinition根据名字、维而验beanDefinition
 		for (String beanName : beanNames) {
 			//合并父BeanDefinition
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
@@ -852,7 +853,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 							"' with an equivalent definition: replacing [" + existingDefinition +
 							"] with [" + beanDefinition + "]");
 				}
-			}
+			} 
+			//Spring  注入自己 的bd
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		}
 		else {

@@ -466,6 +466,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Make sure bean class is actually resolved at this point, and
 		// clone the bean definition in case of a dynamically resolved Class
 		// which cannot be stored in the shared merged bean definition.
+		//从beanDefinition对象当中获取出来bean的类型
 		Class<?> resolvedClass = resolveBeanClass(mbd, beanName);
 		if (resolvedClass != null && !mbd.hasBeanClass() && mbd.getBeanClassName() != null) {
 			mbdToUse = new RootBeanDefinition(mbd);
@@ -485,6 +486,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			// 在 bean 初始化前应用后置处理，如果后置处理返回的 bean 不为空，则直接返回
 			//这个类需要通过代码演示
+			//第一次调用后置处理器 -- > AOP
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
@@ -539,6 +541,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 		if (instanceWrapper == null) {
 			/**
+			 * 第二次调用 后置处理器
 			 * 创建 bean 实例，并将实例包裹在 BeanWrapper 实现类对象中返回。
 			 * createBeanInstance中包含三种创建 bean 实例的方式：
 			 *   1. 通过工厂方法创建 bean 实例
@@ -547,6 +550,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			 *
 			 * 若 bean 的配置信息中配置了 lookup-method 和 replace-method，则会使用 CGLIB
 			 * 增强 bean 实例。关于lookup-method和replace-method后面再说。
+			 * 这个方法完成了对象创建--->仅仅是对象创建
 			 */
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
@@ -557,9 +561,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// Allow post-processors to modify the merged bean definition.
+		//从这个javadoc可以看出这里说的是可以通过post-processors去modify合并的beanDefinition
+		//和循环依赖无关
 		synchronized (mbd.postProcessingLock) {
 			if (!mbd.postProcessed) {
 				try {
+					//第三次调用后置处理器
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
 				}
 				catch (Throwable ex) {
@@ -572,6 +579,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
+		//判断是否是循环依赖
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
 				isSingletonCurrentlyInCreation(beanName));
 		if (earlySingletonExposure) {
@@ -579,6 +587,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				logger.debug("Eagerly caching bean '" + beanName +
 						"' to allow for resolving potential circular references");
 			}
+			//第四次调用后置处理器 判断是否需要AOP 这里传入的是一个工厂Lambda表达式返回的就是一个factorybean
+			//添加一个singletonFactory
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
@@ -586,8 +596,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object exposedObject = bean;
 		try {
 			//设置属性，非常重要
+			//填充属性,也就是我们常常说的自动注入
+			//里面会完成第五次和第六次后置处理器的调用 循环依赖
 			populateBean(beanName, mbd, instanceWrapper);
-			//执行后置处理器，aop就是在这里完成的处理
+			//执行后置处理器，aop就是在这里完成的处理 也就是生命周期相关的回调
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {
@@ -1155,10 +1167,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// Candidate constructors for autowiring?
-		//由后置处理器决定返回哪些构造方法
+		//由后置处理器决定返回哪些构造方法  推断构造方法
 		Constructor<?>[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);
 		if (ctors != null || mbd.getResolvedAutowireMode() == AUTOWIRE_CONSTRUCTOR ||
 				mbd.hasConstructorArgumentValues() || !ObjectUtils.isEmpty(args))  {
+			//找一个合理的构造方法
 			return autowireConstructor(beanName, mbd, ctors, args);
 		}
 

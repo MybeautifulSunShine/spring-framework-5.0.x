@@ -557,6 +557,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				///spring开始实例化单例的类
+				//开始实例化单例的类需要validate和life
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
@@ -898,6 +900,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		for (String weaverAwareName : weaverAwareNames) {
 			getBean(weaverAwareName);
 		}
+
 
 		// Stop using the temporary ClassLoader for type matching.
 		beanFactory.setTempClassLoader(null);

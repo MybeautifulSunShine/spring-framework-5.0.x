@@ -269,12 +269,6 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		 * 之后再来断点，这样就确保了我们是在获取这个bean的时候调用的
 		 *
 		 * 需要说明的是在初始化时候调用一般都是返回null
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
 		 * lazy
 		 */
 		Object sharedInstance = getSingleton(beanName);
@@ -302,10 +296,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		else {
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
-			/**
-			 * 原型
-			 * 如果是原型不应该在初始化的时候创建
-			 */
+            //	原型		 * 如果是原型不应该在初始化的时候创建
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}

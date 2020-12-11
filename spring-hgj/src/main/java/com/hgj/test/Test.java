@@ -1,8 +1,8 @@
 package com.hgj.test;
 
 import com.hgj.app.Appconfig;
-import com.hgj.beanDetiontion.CustomScanner;
-import com.hgj.beanDetiontion.HGBeanFactoryProcess;
+import com.hgj.beanDetiontion.OrderService;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Test {
@@ -11,9 +11,12 @@ public class Test {
 		AnnotationConfigApplicationContext applicationContext =
 				new AnnotationConfigApplicationContext();
 		applicationContext.register(Appconfig.class);
-		applicationContext.addBeanFactoryPostProcessor(new HGBeanFactoryProcess());
+//		applicationContext.addBeanFactoryPostProcessor(new HGBeanFactoryProcess());
+		DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) applicationContext.getBeanFactory();
+//		beanFactory.setAllowCircularReferences(false);
 		applicationContext.refresh();
-
+		System.out.println(beanFactory.getBean(OrderService.class));
+//		System.out.println(applicationContext.getBean(E.class));
 //		CustomScanner scanner = new CustomScanner(applicationContext);
 //		scanner.addIncludeFilter(null);
 //		int scan = scanner.scan("com.hgj");

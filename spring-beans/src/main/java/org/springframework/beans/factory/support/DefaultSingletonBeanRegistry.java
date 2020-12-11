@@ -153,8 +153,20 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(singletonFactory, "Singleton factory must not be null");
 		synchronized (this.singletonObjects) {
+			//如果单例池当中不存在才会add
+			//因为这里主要为了循环依赖服务的代码
+			//如果bean存在单例池的话其实已经是一个完整的bean了
+			//一个完整的bean自然已经完成了属性注入,循环依赖已经依赖上了
+			//所以如果这个对象已经是一个完整bean,就不需要关心,不需要进if
 			if (!this.singletonObjects.containsKey(beanName)) {
+				//把工厂对象put到一级map--singletonFactories
+				//二级主要存放ObjectFactory类型的工厂
 				this.singletonFactories.put(beanName, singletonFactory);
+				//从三级map中remove掉当前bean
+				//为什么需要remove?抛开细节,这个三个map当中其实存的都是同一个对象
+				//spring的做法是三个不能同时都存,加1存了,则2和3就要remove
+				//反之亦然,现在既然put到了2级缓存, 1已经判断没有, 3则直接remove
+				//主要存放半成品的Bean
 				this.earlySingletonObjects.remove(beanName);
 				this.registeredSingletons.add(beanName);
 			}
@@ -180,9 +192,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		//从map中获取bean如果不为空直接返回，不再进行初始化工作
 		//讲道理一个程序员提供的对象这里一般都是为空的
 		Object singletonObject = this.singletonObjects.get(beanName);
+		//是否正在 创建
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
-				singletonObject = this.earlySingletonObjects.get(beanName);
+					singletonObject = this.earlySingletonObjects.get(beanName);
 				if (singletonObject == null && allowEarlyReference) {
 					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 					if (singletonFactory != null) {
@@ -209,6 +222,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		synchronized (this.singletonObjects) {
 			Object singletonObject = this.singletonObjects.get(beanName);
 			if (singletonObject == null) {
+				//判断是否正在销毁
 				if (this.singletonsCurrentlyInDestruction) {
 					throw new BeanCreationNotAllowedException(beanName,
 							"Singleton bean creation not allowed while singletons of this factory are in destruction " +

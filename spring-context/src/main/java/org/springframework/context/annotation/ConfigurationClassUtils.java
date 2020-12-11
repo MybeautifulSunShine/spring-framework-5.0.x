@@ -119,7 +119,7 @@ abstract class ConfigurationClassUtils {
 			//如果存在Configuration 注解,则为BeanDefinition 设置configurationClass属性为full
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
-		//判断是否加了以下注解，摘录isLiteConfigurationCandidate的源码
+		//判断是否加了以下注解，摘录isLiteConfigurationCandidate的源码 初始静态的方法
 		//     candidateIndicators.add(Component.class.getName());
 		//		candidateIndicators.add(ComponentScan.class.getName());
 		//		candidateIndicators.add(Import.class.getName());
