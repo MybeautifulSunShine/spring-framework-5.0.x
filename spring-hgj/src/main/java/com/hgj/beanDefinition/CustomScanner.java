@@ -1,4 +1,4 @@
-package com.hgj.beanDetiontion;
+package com.hgj.beanDefinition;
 
 import com.hgj.anno.HgjScanner;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
