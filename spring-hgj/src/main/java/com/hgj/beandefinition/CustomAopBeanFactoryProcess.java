@@ -1,8 +1,9 @@
-package com.hgj.beanDefinition;
+package com.hgj.beandefinition;
 
 import com.hgj.cglib.CglibUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.stereotype.Component;
 
 /**
  * 描述:
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  * @version 1.0
  * @create 2020-12-14 11:15
  */
+
 public class CustomAopBeanFactoryProcess implements BeanPostProcessor {
 
 	@Override

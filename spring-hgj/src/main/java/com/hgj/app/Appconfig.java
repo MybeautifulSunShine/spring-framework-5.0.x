@@ -2,13 +2,12 @@ package com.hgj.app;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-@ComponentScan("com.hgj.beanDefinition")
+@ComponentScan("com.hgj.services")
 //@MapperScan
 @Configuration
 //无论哪个接口都使用cglib
-@EnableAspectJAutoProxy()
+//@EnableAspectJAutoProxy()
 //@Import(CustomAopBeanFactoryProcess.class)
 //@ImportResource("classpath:spring.xml")
 public class Appconfig {

@@ -1,4 +1,4 @@
-package com.hgj.beanDefinition;
+package com.hgj.beandefinition;
 
 public interface I {
 

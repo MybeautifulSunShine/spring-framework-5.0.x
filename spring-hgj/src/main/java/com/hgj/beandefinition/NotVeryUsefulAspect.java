@@ -1,4 +1,4 @@
-package com.hgj.aop;
+package com.hgj.beandefinition;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * 描述:
  *
  * @author HGJ
- * @version 1.0 //添加这个才会生效，作为aspect
+ * @version 1.0  添加这个才会生效，作为aspect
  * @create 2020-12-14 14:20
  */
 
@@ -22,8 +22,7 @@ public class NotVeryUsefulAspect {
 //	private void anyOldTransfer() {
 //	}
 
-
-	@Pointcut("execution(com.hgj.beanDefinition.*.*(..))")
+	@Pointcut("execution(public * com.hgj.beandefinition.*.*(..))")
 	private void pointCutExecutionAny() {
 	}
 /*
@@ -55,7 +54,7 @@ public class NotVeryUsefulAspect {
 //	@Before("PointCutThis")
 //	@Before("PointCutTarget")
 //	@Before("PointCutAnnoWith")
-	@Before("pointCutExecutionAny")
+	@Before("pointCutExecutionAny()")
 	public void doAccessCheck() {
 		System.out.println("aop --- start");
 	}

@@ -14,7 +14,8 @@ public class Test {
 
 //		beanFactory.setAllowCircularReferences(false);
 		applicationContext.refresh();
-		applicationContext.getBean("orderService");
+//		applicationContext.getBean("x");
+//		applicationContext.getBean("orderService");
 
 //		System.out.println(applicationContext.getBean(E.class));
 //		CustomScanner scanner = new CustomScanner(applicationContext);

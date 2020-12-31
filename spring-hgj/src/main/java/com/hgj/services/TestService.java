@@ -9,6 +9,6 @@ import com.hgj.anno.HgjScanner;
  * @version 1.0
  * @create 2020-12-08 15:17
  */
-@HgjScanner
-public class TestService {
-}
+//@HgjScanner
+//public class TestService {
+//}

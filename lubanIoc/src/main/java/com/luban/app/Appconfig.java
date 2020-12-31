@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-@ComponentScan({"com.luban"})
+@ComponentScan({"com.luban.merge"})
 @Configuration
 //@Import(MyImport.class)
 //@EanbleHgj

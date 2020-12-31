@@ -50,7 +50,9 @@ public class InjectionMetadata {
 	private static final Log logger = LogFactory.getLog(InjectionMetadata.class);
 
 	private final Class<?> targetClass;
-
+	/**
+	 * 需要注入的元素 集合 描述每一个方法
+	 */
 	private final Collection<InjectedElement> injectedElements;
 
 	@Nullable

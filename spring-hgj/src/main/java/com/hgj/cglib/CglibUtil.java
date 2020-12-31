@@ -1,6 +1,6 @@
 package com.hgj.cglib;
 
-import com.hgj.beanDefinition.OrderService;
+import com.hgj.beandefinition.OrderService;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
